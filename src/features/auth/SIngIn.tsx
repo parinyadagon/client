@@ -14,7 +14,8 @@ import Typography from "@mui/material/Typography";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 
 import { useAppDispatch, useAppSelector } from "@/hooks/useRedux";
-import { login, selectorToken } from "./authSlice";
+import { login, selectorToken, setToken } from "./authSlice";
+import { useEffectCustom } from "@/hooks/useEffectCustom";
 
 function Copyright(props: any) {
   return (
@@ -38,6 +39,14 @@ const theme = createTheme();
 export default function SignIn() {
   const dispatch = useAppDispatch();
   const token = useAppSelector(selectorToken);
+
+  useEffectCustom(() => {
+    const token: string = localStorage.getItem("token") || "";
+    if (token) {
+      dispatch(setToken(token));
+    }
+  });
+
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
