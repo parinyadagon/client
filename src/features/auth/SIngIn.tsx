@@ -1,4 +1,7 @@
 import * as React from "react";
+import { useRouter } from "next/router";
+
+//MUI
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
@@ -11,10 +14,11 @@ import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
-import { createTheme, ThemeProvider } from "@mui/material/styles";
+import NoSsr from "@mui/material/NoSsr";
 
+// Redux
 import { useAppDispatch, useAppSelector } from "@/hooks/useRedux";
-import { login, selectorToken, setToken } from "./authSlice";
+import { login, selectorIsAuth, setToken } from "./authSlice";
 import { useEffectCustom } from "@/hooks/useEffectCustom";
 
 function Copyright(props: any) {
@@ -34,19 +38,25 @@ function Copyright(props: any) {
   );
 }
 
-const theme = createTheme();
-
 export default function SignIn() {
-  const dispatch = useAppDispatch();
-  const token = useAppSelector(selectorToken);
+  const [isPending, startTransition] = React.useTransition();
 
+  // Redux
+  const dispatch = useAppDispatch();
+  const isAuth = useAppSelector(selectorIsAuth);
+
+  // Router
+  const router = useRouter();
+
+  //Mounted
   useEffectCustom(() => {
-    const token: string = localStorage.getItem("token") || "";
-    if (token) {
-      dispatch(setToken(token));
-    }
+    dispatch(setToken());
+    if (isAuth) router.push("/profile");
   });
 
+  if (isAuth) return <div>Redirecting...</div>;
+
+  // Handle Submit
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
@@ -56,11 +66,7 @@ export default function SignIn() {
         user: data.get("email") as string,
         pwd: data.get("password") as string,
       })
-    )
-      .unwrap()
-      .then(() => {
-        console.log("login success", token);
-      });
+    );
 
     console.log({
       email: data.get("email"),
@@ -69,7 +75,7 @@ export default function SignIn() {
   };
 
   return (
-    <ThemeProvider theme={theme}>
+    <NoSsr>
       <Grid container component="main" sx={{ height: "100vh" }}>
         <CssBaseline />
         <Grid
@@ -103,7 +109,6 @@ export default function SignIn() {
             <Typography component="h1" variant="h5">
               Sign in
             </Typography>
-            {token}
             <Box
               component="form"
               noValidate
@@ -157,6 +162,6 @@ export default function SignIn() {
           </Box>
         </Grid>
       </Grid>
-    </ThemeProvider>
+    </NoSsr>
   );
 }
