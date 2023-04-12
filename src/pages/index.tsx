@@ -1,9 +1,5 @@
 import Head from "next/head";
-import SignIn from "@/features/auth/SIngIn";
-
-type Data = {
-  data: string;
-};
+import SignIn from "@/components/SIngIn";
 
 export default function Home() {
   return (

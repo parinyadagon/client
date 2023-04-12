@@ -3,7 +3,7 @@ import { useRouter } from "next/router";
 
 import { useEffectCustom } from "@/hooks/useEffectCustom";
 import { useAppDispatch, useAppSelector } from "@/hooks/useRedux";
-import { setToken, selectorIsAuth } from "@/features/auth/authSlice";
+import { setToken, selectorIsAuth } from "@/slices/auth/authSlice";
 
 // components
 import MainAppBar from "../MainAppBar";
