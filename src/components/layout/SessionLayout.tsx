@@ -6,7 +6,7 @@ import { useAppDispatch, useAppSelector } from "@/hooks/useRedux";
 import { setToken, selectorIsAuth } from "@/slices/auth/authSlice";
 
 // components
-import MainAppBar from "../MainAppBar";
+import MainAppBar from "../AppBar";
 
 type Props = {
   children: React.ReactNode;

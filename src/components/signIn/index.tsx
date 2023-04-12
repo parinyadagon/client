@@ -18,7 +18,7 @@ import NoSsr from "@mui/material/NoSsr";
 
 // Redux
 import { useAppDispatch, useAppSelector } from "@/hooks/useRedux";
-import { login, selectorIsAuth, setToken } from "../slices/auth/authSlice";
+import { login, selectorIsAuth, setToken } from "../../slices/auth/authSlice";
 import { useEffectCustom } from "@/hooks/useEffectCustom";
 
 function Copyright(props: any) {
